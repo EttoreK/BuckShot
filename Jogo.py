@@ -59,6 +59,8 @@ def nivel(rodada):
     return fase
 
 
+dict_itens = { 0: "detector", 1: "biblia", 2: "pilula", 3: "anzol", 4: "alvo", 5: "algema", 6: "polvora"}
+
 def itens(itens):
     # 1 - detector (index de uma bala-perigosa qualquer)
     # 2 - bíblia (inverte a periculosidade da bala no gatilho)
@@ -97,7 +99,7 @@ def engatilhar(fase):
 
 def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
     dano = 1
-    item = 0
+    jogada_opcao = 0
     moeda2 = True
 
     if moeda:
@@ -113,24 +115,25 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
         itensM = itensIA.copy()
         itensI = itensJ.copy()
 
-    while item != "N" and sum(itensM.values()) > 0:
+    while jogada_opcao != "N" and sum(itensM.values()) > 0:
 
         index = 0
+
+        ##### Mostra vidas e itens de jogador e computador
         print(
             "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
             % (vidaM, vidaI)
         )
-        for i in itensM.keys():
+        for index_item, nome_item in enumerate(itensM.keys()):
             print(
                 "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
-                % (index, itensM[i], i, itensI[i], i)
+                % (index_item, itensM[nome_item], nome_item, itensI[nome_item], nome_item)
             )
-            index += 1
+        ###############################################
 
-        item = input("Usar item [S|N]: ").upper()
-        if item == "S":
+        jogada_opcao = input("Usar item [S|N]: ").upper()
+        if jogada_opcao == "S":
             index = input("Digite o index do item: ")
-
             try:
                 index = int(index)
             except:
@@ -173,8 +176,8 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
                             print("Nenhum item roubado, gastou o item")
                         else:
                             print("Item %s roubado" % list(itensM)[index])
-                            itensM[list(itensM)[index]] += 1
-                            itensI[list(itensI)[index]] -= 1
+                            itensM[dict_itens[index]] += 1
+                            itensI[dict_itens[index]] -= 1
                     case 4:
                         # alvo
                         if len(balas):
@@ -189,10 +192,10 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
                             dano = 2
                         print("item polvora usado, agora o dano da bala é: ", dano)
 
-                itensM[list(itensM)[index]] -= 1
+                itensM[dict_itens[index]] -= 1
             else:
                 print("Você não possui este item")
-        elif item != "N" and item != "S":
+        elif jogada_opcao != "N" and jogada_opcao != "S":
             print('Digite "S" ou "N" para depois escolher o item')
 
     vidaI -= balas.pop(-1) * dano
@@ -217,13 +220,13 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
 
 while True:
     print(titulo)
-    jogas = input(
+    opcao_inicial = input(
         'Digite "J" para jogar, "S" para sair e "T" para ver o tutorial\n'
     ).upper()
 
-    if jogas == "J":
-        rodada0 = 8
-        rodada = 0
+    if opcao_inicial == "J":
+        rodada = -1
+        vidaIA = 0
         itens_jogo = {
             "detector": 0,
             "biblia": 0,
@@ -236,9 +239,10 @@ while True:
         time.sleep(1)
         os.system("cls" if os.name == "nt" else "clear")
         while True:
-            if rodada0 != rodada:
+            if vidaIA <= 0:
                 os.system("cls" if os.name == "nt" else "clear")
-                rodada0 = rodada
+
+                rodada += 1
                 fase = nivel(rodada)
                 vidaIA = fase["vida"]
                 vidaJ = fase["vida"]
@@ -252,14 +256,14 @@ while True:
 
             itensJ = itens(itensJ)
             itensIA = itens(itensIA)
+
             print("\n" + 38 * "=" + "\n\t\tRodada: ", rodada, "\n" + 38 * "=")
+
             moeda, vidaIA, vidaJ, itensIA, itensJ, balas = jogada(
                 moeda, vidaIA, vidaJ, itensIA, itensJ, balas
             )
             time.sleep(1)
 
-            if vidaIA <= 0:
-                rodada += 1
             if vidaJ <= 0:
                 os.system("cls" if os.name == "nt" else "clear")
                 print("perdeuuuuuu")
@@ -270,7 +274,7 @@ while True:
                 print("Venceu, ganhou, agora acabou")
                 time.sleep(1)
                 break
-    elif jogas == "S":
+    elif opcao_inicial == "S":
         print("Saindo...")
         break
     else:
