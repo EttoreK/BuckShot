@@ -1,6 +1,7 @@
 import time
 import os
 import random
+import math
 
 os.system("cls" if os.name == "nt" else "clear")
 
@@ -24,26 +25,39 @@ titulo = str(
     + "\t\t\t ▀███▀   ▀██████▀    ████████▀    ███    █▀    ███    ▀██\t\t\t\t\t ▄████████▀    ███    █▀  █▀     ███    ▀██"
     + "\n\n"
 )
-
 dict_itens = { 0: "detector", 1: "biblia", 2: "pilula", 3: "anzol", 4: "alvo", 5: "algema", 6: "polvora"}
-
 tempo_ocioso = 0.5
-
 vez = {0: 0, 1: 0}
+
+def minimax(curDepth, nodeIndex, maxTurn, scores, targetDepth):
+
+  if (curDepth == targetDepth):
+      return scores[nodeIndex]
+  
+  if (maxTurn):
+      return max(minimax(curDepth + 1, nodeIndex * 2,
+      False, scores, targetDepth),
+      minimax(curDepth + 1, nodeIndex * 2 + 1,
+      False, scores, targetDepth))
+  else:
+      return min(minimax(curDepth + 1, nodeIndex * 2,
+      True, scores, targetDepth),
+      minimax(curDepth + 1, nodeIndex * 2 + 1,
+      True, scores, targetDepth))
 
 def nivel(rodada):
     match rodada:
         case 0:
-            vida = random.randint(1, 2)
+            vida = random.randint(2, 3)
             balas = random.randint(1, 3)
         case 1:
-            vida = random.randint(1, 2)
+            vida = random.randint(2, 3)
             balas = random.randint(1, 4)
         case 2:
-            vida = random.randint(2, 3)
+            vida = random.randint(2, 4)
             balas = random.randint(2, 4)
         case 3:
-            vida = random.randint(2, 4)
+            vida = random.randint(3, 4)
             balas = random.randint(2, 5)
         case 4:
             vida = random.randint(3, 5)
@@ -82,7 +96,6 @@ def itens(itens):
 
     return itens
 
-
 def engatilhar(fase):
     balas = []
     balasVazias = fase["balas-vazias"]
@@ -98,11 +111,15 @@ def engatilhar(fase):
     # print("balas: ", balas)
     return balas
 
-
 def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
     dano = 1
     jogada_opcao = 0
     moeda2 = True
+
+    pontos = [3, 5, 2, 9, 12, 5, 23, 23]
+    treeDepth = math.log(len(pontos), 2)
+    print("The optimal value is : ", end = "")
+    print(minimax(0, 0, True, pontos, treeDepth))
 
     if moeda:
         print("\nHumano - balas: [%s]\n\n" % str(balas)[1:-1])
@@ -144,7 +161,6 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
                     "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
                     % (index_item, itensI[nome_item], nome_item, itensM[nome_item], nome_item)
                 )
-        ###############################################
 
         jogada_opcao = input("Usar item [S|N]: ").upper()
         if jogada_opcao == "S":
@@ -233,7 +249,6 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
 
     return (moeda, vidaIA, vidaJ, itensIA.copy(), itensJ.copy(), balas)
 
-
 while True:
     print(titulo)
     opcao_inicial = input(
@@ -272,9 +287,13 @@ while True:
             if balas == []:
                 balas = engatilhar(fase)
 
-            if 0 not in vez.values():
+            if 0 not in list(vez.values()):
                 vez[0] = 0
                 vez[1] = 0
+                itensJ = itens(itensJ)
+                itensIA = itens(itensIA)
+            else: 
+                vez[moeda] += 1
 
             moeda, vidaIA, vidaJ, itensIA, itensJ, balas = jogada(
                 moeda, vidaIA, vidaJ, itensIA, itensJ, balas
