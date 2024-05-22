@@ -26,17 +26,16 @@ titulo = str(
     + "\n\n"
 )
 dict_itens = {
-    0: "detector",
-    1: "biblia",
-    2: "pilula",
-    3: "anzol",
-    4: "alvo",
-    5: "algema",
-    6: "polvora",
+    0: "Detector",
+    1: "Biblia",
+    2: "Pilula",
+    3: "Anzol",
+    4: "Alvo",
+    5: "Algema",
+    6: "Polvora"
 }
 tempo_ocioso = 0.5
 vez = {0: 0, 1: 0}
-
 
 def minimax(cur_depth, node_index, max_turn, scores, target_depth):
     if cur_depth == target_depth:
@@ -52,7 +51,6 @@ def minimax(cur_depth, node_index, max_turn, scores, target_depth):
             minimax(cur_depth + 1, node_index * 2, True, scores, target_depth),
             minimax(cur_depth + 1, node_index * 2 + 1, True, scores, target_depth),
         )
-
 
 def nivel(rodada):
     match rodada:
@@ -86,7 +84,6 @@ def nivel(rodada):
     fase["balas-vazias"] = balas - fase["balas-perigosas"]
     return fase
 
-
 def itens(itens):
     # 1 - detector (index de uma bala-perigosa qualquer)
     # 2 - bíblia (inverte a periculosidade da bala no gatilho)
@@ -106,7 +103,6 @@ def itens(itens):
 
     return itens
 
-
 def engatilhar(fase):
     balas = []
     balas_vazias = fase["balas-vazias"]
@@ -122,7 +118,6 @@ def engatilhar(fase):
     # print("balas: ", balas)
     return balas
 
-
 def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
     dano = 1
     jogada_opcao = 0
@@ -137,14 +132,14 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
         print("\nHumano - balas: [%s]\n\n" % str(balas)[1:-1])
         vida_m = vida_j
         vida_i = vida_ia
-        itens_m = itens_j.copy()
-        itens_i = itens_ia.copy()
+        itens_m = itens_j
+        itens_i = itens_ia
     else:
         print("\nPC jogando - balas: [%s]\n\n" % str(balas)[1:-1])
         vida_m = vida_ia
         vida_i = vida_j
-        itens_m = itens_ia.copy()
-        itens_i = itens_j.copy()
+        itens_m = itens_ia
+        itens_i = itens_j
 
     while jogada_opcao != "N" and sum(itens_m.values()) > 0:
 
@@ -171,7 +166,7 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
                         itens_m[nome_item],
                         nome_item,
                         itens_i[nome_item],
-                        nome_item,
+                        nome_item
                     )
                 )
             else:
@@ -182,7 +177,7 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
                         itens_i[nome_item],
                         nome_item,
                         itens_m[nome_item],
-                        nome_item,
+                        nome_item
                     )
                 )
 
@@ -195,57 +190,70 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
             except ValueError:
                 print("Digite apenas o index do item")
 
-            if list(itens_m.values())[index] != 0:
+            if index in dict_itens and list(itens_m.values())[index] != 0:
                 match index:
                     case 0:
                         # detector
-                        detector = balas.index(1)
-                        if detector != 0:
-                            print("A %iª bala é perigosa" % detector)
-                        else:
-                            print("Não há mais nenhuma bala perigosa")
+                        try:    
+                            detector = balas.index(1)
+                            if detector != 0:
+                                print("A %iª bala é perigosa" % detector)
+                            else:
+                                print("Não há mais nenhuma bala perigosa")
+                        except:
+                            print("Nenhuma bala perigosa na arma")
                     case 1:
                         # biblia
-                        if balas[-1] == 0:
-                            balas[-1] = 1
-                        else:
-                            balas[-1] = 0
-                        print("Bala no gatilho inverteu de periculosidade")
+                        try:
+                            if balas[-1] == 0:
+                                balas[-1] = 1
+                            else:
+                                balas[-1] = 0
+                            print("Bala no gatilho inverteu de periculosidade")
+                        except:
+                            print("As balas fugiram")
                     case 2:
                         # pilula
-                        if (fase["vida"] - vida_m) >= 3:
+                        if (fase["vida"] - vida_m) >= 2:
                             vida_m += 2
                             print("Item pilula usado, a vida aumentou em 2 pontos")
+                        elif (fase["vida"] == vida_m):
+                            vida_m += 0 
                         else:
-                            vida_m += fase["vida"] - vida_m
+                            vida_m += 1
                             print("Item pilula usado, a vida aumentou em 1 ponto")
                     case 3:
                         # anzol
-                        index = input("Digite o index do item para roubar: ")
+                        index_item = input("Digite o index do item para roubar: ")
 
                         try:
-                            index = int(index)
+                            index_item = int(index_item)
                         except ValueError:
                             print("Digite apenas o index do item")
+                            next
 
-                        if list(itens_m.values())[index] == 0:
+                        if list(itens_m.values())[index_item] == 0:
                             print("Nenhum item roubado, gastou o item")
                         else:
-                            print("Item %s roubado" % list(itens_m)[index])
-                            itens_m[dict_itens[index]] += 1
-                            itens_i[dict_itens[index]] -= 1
+                            itens_m[dict_itens[index_item]] += 1
+                            itens_i[dict_itens[index_item]] -= 1
+                            print("Item %s roubado" % list(itens_m)[index_item])
                     case 4:
                         # alvo
-                        if len(balas):
+                        try:
                             balas.pop()
+                            print("item alvo usado, agora", "tem [%i] no cartucho" % len(balas) if len(balas) else "não tem balas no cartucho")
+                        except:
+                            balas
+                            print("Não tinha nenhuma bala no cartucho, gastou o item")
                     case 5:
                         # algema
-                        moeda2 = not moeda2
-                        print("item algema usado, agora a troca de vez é: ", moeda2)
+                        if moeda2:
+                            moeda2 = not moeda2
+                        print("item moeda usado, turno adversário pulado")
                     case 6:
                         # polvora
-                        if dano == 1:
-                            dano = 2
+                        dano = 2
                         print("item polvora usado, agora o dano da bala é: ", dano)
 
                 itens_m[dict_itens[index]] -= 1
@@ -255,7 +263,10 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
         elif jogada_opcao != "N" and jogada_opcao != "S":
             print('Digite "S" ou "N" para depois escolher o item')
 
-    vida_i -= balas.pop(-1) * dano
+    try:
+        vida_i -= balas.pop(-1) * dano
+    except:
+        print("Cartucho vazio")
 
     if moeda:
         vida_j = vida_m
@@ -273,7 +284,6 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
 
     return (moeda, vida_ia, vida_j, itens_ia.copy(), itens_j.copy(), balas)
 
-
 while True:
     print(titulo)
     opcao_inicial = input(
@@ -286,13 +296,13 @@ while True:
         rodada = -1
         vida_ia = 0
         itens_jogo = {
-            "detector": 0,
-            "biblia": 0,
-            "pilula": 0,
-            "anzol": 0,
-            "alvo": 0,
-            "algema": 0,
-            "polvora": 0,
+            "Detector": 0,
+            "Biblia": 0,
+            "Pilula": 0,
+            "Anzol": 0,
+            "Alvo": 0,
+            "Algema": 0,
+            "Polvora": 0
         }
 
         while True:
