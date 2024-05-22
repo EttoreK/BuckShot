@@ -25,25 +25,34 @@ titulo = str(
     + "\t\t\t ▀███▀   ▀██████▀    ████████▀    ███    █▀    ███    ▀██\t\t\t\t\t ▄████████▀    ███    █▀  █▀     ███    ▀██"
     + "\n\n"
 )
-dict_itens = { 0: "detector", 1: "biblia", 2: "pilula", 3: "anzol", 4: "alvo", 5: "algema", 6: "polvora"}
+dict_itens = {
+    0: "detector",
+    1: "biblia",
+    2: "pilula",
+    3: "anzol",
+    4: "alvo",
+    5: "algema",
+    6: "polvora",
+}
 tempo_ocioso = 0.5
 vez = {0: 0, 1: 0}
 
-def minimax(curDepth, nodeIndex, maxTurn, scores, targetDepth):
 
-  if (curDepth == targetDepth):
-      return scores[nodeIndex]
-  
-  if (maxTurn):
-      return max(minimax(curDepth + 1, nodeIndex * 2,
-      False, scores, targetDepth),
-      minimax(curDepth + 1, nodeIndex * 2 + 1,
-      False, scores, targetDepth))
-  else:
-      return min(minimax(curDepth + 1, nodeIndex * 2,
-      True, scores, targetDepth),
-      minimax(curDepth + 1, nodeIndex * 2 + 1,
-      True, scores, targetDepth))
+def minimax(cur_depth, node_index, max_turn, scores, target_depth):
+    if cur_depth == target_depth:
+        return scores[node_index]
+
+    if max_turn:
+        return max(
+            minimax(cur_depth + 1, node_index * 2, False, scores, target_depth),
+            minimax(cur_depth + 1, node_index * 2 + 1, False, scores, target_depth),
+        )
+    else:
+        return min(
+            minimax(cur_depth + 1, node_index * 2, True, scores, target_depth),
+            minimax(cur_depth + 1, node_index * 2 + 1, True, scores, target_depth),
+        )
+
 
 def nivel(rodada):
     match rodada:
@@ -77,6 +86,7 @@ def nivel(rodada):
     fase["balas-vazias"] = balas - fase["balas-perigosas"]
     return fase
 
+
 def itens(itens):
     # 1 - detector (index de uma bala-perigosa qualquer)
     # 2 - bíblia (inverte a periculosidade da bala no gatilho)
@@ -96,70 +106,84 @@ def itens(itens):
 
     return itens
 
+
 def engatilhar(fase):
     balas = []
-    balasVazias = fase["balas-vazias"]
-    balasPerigosas = fase["balas-perigosas"]
+    balas_vazias = fase["balas-vazias"]
+    balas_perigosas = fase["balas-perigosas"]
     while len(balas) != (fase["balas-vazias"] + fase["balas-perigosas"]):
         var = random.choice(["balas-vazias", "balas-perigosas"])
-        if var == "balas-vazias" and balasVazias != 0:
+        if var == "balas-vazias" and balas_vazias != 0:
             balas.append(0)
-            balasVazias -= 1
-        elif var == "balas-perigosas" and balasPerigosas != 0:
+            balas_vazias -= 1
+        elif var == "balas-perigosas" and balas_perigosas != 0:
             balas.append(1)
-            balasPerigosas -= 1
+            balas_perigosas -= 1
     # print("balas: ", balas)
     return balas
 
-def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
+
+def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
     dano = 1
     jogada_opcao = 0
     moeda2 = True
 
     pontos = [3, 5, 2, 9, 12, 5, 23, 23]
-    treeDepth = math.log(len(pontos), 2)
-    print("The optimal value is : ", end = "")
-    print(minimax(0, 0, True, pontos, treeDepth))
+    tree_depth = math.log(len(pontos), 2)
+    print("The optimal value is : ", end="")
+    print(minimax(0, 0, True, pontos, tree_depth))
 
     if moeda:
         print("\nHumano - balas: [%s]\n\n" % str(balas)[1:-1])
-        vidaM = vidaJ
-        vidaI = vidaIA
-        itensM = itensJ.copy()
-        itensI = itensIA.copy()
+        vida_m = vida_j
+        vida_i = vida_ia
+        itens_m = itens_j.copy()
+        itens_i = itens_ia.copy()
     else:
         print("\nPC jogando - balas: [%s]\n\n" % str(balas)[1:-1])
-        vidaM = vidaIA
-        vidaI = vidaJ
-        itensM = itensIA.copy()
-        itensI = itensJ.copy()
+        vida_m = vida_ia
+        vida_i = vida_j
+        itens_m = itens_ia.copy()
+        itens_i = itens_j.copy()
 
-    while jogada_opcao != "N" and sum(itensM.values()) > 0:
+    while jogada_opcao != "N" and sum(itens_m.values()) > 0:
 
         index = 0
 
-        ##### Mostra vidas e itens de jogador e computador
+        # Mostra vidas e itens de jogador e computador
         if moeda:
             print(
                 "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
-                % (vidaM, vidaI)
+                % (vida_m, vida_i)
             )
         else:
             print(
                 "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
-                % (vidaI, vidaM)
+                % (vida_i, vida_m)
             )
 
-        for index_item, nome_item in enumerate(itensM.keys()):
+        for index_item, nome_item in enumerate(itens_m.keys()):
             if moeda:
                 print(
                     "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
-                    % (index_item, itensM[nome_item], nome_item, itensI[nome_item], nome_item)
+                    % (
+                        index_item,
+                        itens_m[nome_item],
+                        nome_item,
+                        itens_i[nome_item],
+                        nome_item,
+                    )
                 )
             else:
                 print(
                     "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
-                    % (index_item, itensI[nome_item], nome_item, itensM[nome_item], nome_item)
+                    % (
+                        index_item,
+                        itens_i[nome_item],
+                        nome_item,
+                        itens_m[nome_item],
+                        nome_item,
+                    )
                 )
 
         jogada_opcao = input("Usar item [S|N]: ").upper()
@@ -168,10 +192,10 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
 
             try:
                 index = int(index)
-            except:
+            except ValueError:
                 print("Digite apenas o index do item")
 
-            if list(itensM.values())[index] != 0:
+            if list(itens_m.values())[index] != 0:
                 match index:
                     case 0:
                         # detector
@@ -189,11 +213,11 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
                         print("Bala no gatilho inverteu de periculosidade")
                     case 2:
                         # pilula
-                        if (fase["vida"] - vidaM) >= 3:
-                            vidaM += 2
+                        if (fase["vida"] - vida_m) >= 3:
+                            vida_m += 2
                             print("Item pilula usado, a vida aumentou em 2 pontos")
                         else:
-                            vidaM += fase["vida"] - vidaM
+                            vida_m += fase["vida"] - vida_m
                             print("Item pilula usado, a vida aumentou em 1 ponto")
                     case 3:
                         # anzol
@@ -201,15 +225,15 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
 
                         try:
                             index = int(index)
-                        except:
+                        except ValueError:
                             print("Digite apenas o index do item")
 
-                        if list(itensM.values())[index] == 0:
+                        if list(itens_m.values())[index] == 0:
                             print("Nenhum item roubado, gastou o item")
                         else:
-                            print("Item %s roubado" % list(itensM)[index])
-                            itensM[dict_itens[index]] += 1
-                            itensI[dict_itens[index]] -= 1
+                            print("Item %s roubado" % list(itens_m)[index])
+                            itens_m[dict_itens[index]] += 1
+                            itens_i[dict_itens[index]] -= 1
                     case 4:
                         # alvo
                         if len(balas):
@@ -224,30 +248,31 @@ def jogada(moeda, vidaIA, vidaJ, itensIA, itensJ, balas):
                             dano = 2
                         print("item polvora usado, agora o dano da bala é: ", dano)
 
-                itensM[dict_itens[index]] -= 1
+                itens_m[dict_itens[index]] -= 1
             else:
                 print("Você não possui este item")
 
         elif jogada_opcao != "N" and jogada_opcao != "S":
             print('Digite "S" ou "N" para depois escolher o item')
 
-    vidaI -= balas.pop(-1) * dano
+    vida_i -= balas.pop(-1) * dano
 
     if moeda:
-        vidaJ = vidaM
-        vidaIA = vidaI
-        itensJ = itensM
-        itensIA = itensI
+        vida_j = vida_m
+        vida_ia = vida_i
+        itens_j = itens_m
+        itens_ia = itens_i
     else:
-        vidaIA = vidaM
-        vidaJ = vidaI
-        itensIA = itensM
-        itensJ = itensI
+        vida_ia = vida_m
+        vida_j = vida_i
+        itens_ia = itens_m
+        itens_j = itens_i
 
     if moeda2:
         moeda = not moeda
 
-    return (moeda, vidaIA, vidaJ, itensIA.copy(), itensJ.copy(), balas)
+    return (moeda, vida_ia, vida_j, itens_ia.copy(), itens_j.copy(), balas)
+
 
 while True:
     print(titulo)
@@ -259,7 +284,7 @@ while True:
         time.sleep(tempo_ocioso)
         os.system("cls" if os.name == "nt" else "clear")
         rodada = -1
-        vidaIA = 0
+        vida_ia = 0
         itens_jogo = {
             "detector": 0,
             "biblia": 0,
@@ -267,22 +292,22 @@ while True:
             "anzol": 0,
             "alvo": 0,
             "algema": 0,
-            "polvora": 0
+            "polvora": 0,
         }
 
         while True:
             print("\n" + 38 * "=" + "\n\t\tRodada: ", rodada, "\n" + 38 * "=")
 
-            if vidaIA <= 0:
+            if vida_ia <= 0:
                 os.system("cls" if os.name == "nt" else "clear")
                 rodada += 1
                 fase = nivel(rodada)
-                vidaIA = fase["vida"]
-                vidaJ = fase["vida"]
+                vida_ia = fase["vida"]
+                vida_j = fase["vida"]
                 balas = engatilhar(fase)
                 moeda = random.randint(0, 1)
-                itensJ = itens(itens_jogo.copy())
-                itensIA = itens(itens_jogo.copy())
+                itens_j = itens(itens_jogo.copy())
+                itens_ia = itens(itens_jogo.copy())
 
             if balas == []:
                 balas = engatilhar(fase)
@@ -290,16 +315,16 @@ while True:
             if 0 not in list(vez.values()):
                 vez[0] = 0
                 vez[1] = 0
-                itensJ = itens(itensJ)
-                itensIA = itens(itensIA)
-            else: 
+                itens_j = itens(itens_j)
+                itens_ia = itens(itens_ia)
+            else:
                 vez[moeda] += 1
 
-            moeda, vidaIA, vidaJ, itensIA, itensJ, balas = jogada(
-                moeda, vidaIA, vidaJ, itensIA, itensJ, balas
+            moeda, vida_ia, vida_j, itens_ia, itens_j, balas = jogada(
+                moeda, vida_ia, vida_j, itens_ia, itens_j, balas
             )
 
-            if vidaJ <= 0:
+            if vida_j <= 0:
                 os.system("cls" if os.name == "nt" else "clear")
                 print("perdeuuuuuu")
                 time.sleep(tempo_ocioso)
@@ -310,7 +335,7 @@ while True:
                 print("Venceu, ganhou, agora acabou")
                 time.sleep(tempo_ocioso)
                 break
-            
+
             time.sleep(tempo_ocioso)
 
     elif opcao_inicial == "S":
