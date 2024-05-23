@@ -240,8 +240,7 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
         vida_j = vida_m
         vida_ia = vida_i
         itens_j = itens_m
-        itens_ia = itens_i
-        
+        itens_ia = itens_i    
     else:
         index = 0
 
@@ -256,6 +255,14 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
             % (vida_i, vida_m)
         )
 
+        estatistica = []
+        eh_perigoso = balas.count(1)/len(balas)
+        try:
+            sera_perigoso = balas[0:len(balas)-1].count(1)/len(balas)
+        except:
+            sera_perigoso = 0
+        dif_vida = fase["vida"] - vida_m
+
         for index_item, nome_item in enumerate(itens_m.keys()):
             print(
                     "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
@@ -267,11 +274,10 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
                         nome_item
                     )
                 )
-            
-        pontos = [3, 5, 2, 9, 12, 5, 23, 23]
-        tree_depth = math.log(len(pontos), 2)
-        print("The optimal value is : ", end="")
-        print(minimax(0, 0, True, pontos, tree_depth))
+            estatistica.append(itens_m(nome_item) * 0.5 if nome_item in ["lupa", "alvo"] * 0.3 if nome_item in ["lupa", "alvo"])
+        estatistica = [itens, 5, 2, 9, 12, 5, 23, 23]
+        tree_depth = math.log(len(estatistica), 2)
+        index = minimax(0, 0, False, estatistica, tree_depth)
 
         itens_m[dict_itens[index]] -= 1
             
