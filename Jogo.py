@@ -123,54 +123,141 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
     jogada_opcao = 0
     moeda2 = True
 
-    pontos = [3, 5, 2, 9, 12, 5, 23, 23]
-    tree_depth = math.log(len(pontos), 2)
-    print("The optimal value is : ", end="")
-    print(minimax(0, 0, True, pontos, tree_depth))
-
     if moeda:
         print("\nHumano - balas: [%s]\n\n" % str(balas)[1:-1])
         vida_m = vida_j
         vida_i = vida_ia
         itens_m = itens_j
         itens_i = itens_ia
+
+        while jogada_opcao != "N" and sum(itens_m.values()) > 0:
+
+            index = 0
+
+        # Mostra vidas e itens de jogador e computador
+            print(
+                "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
+                % (vida_m, vida_i)
+            )
+
+            for index_item, nome_item in enumerate(itens_m.keys()):
+                print(
+                    "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
+                    % (
+                        index_item,
+                        itens_m[nome_item],
+                        nome_item,
+                        itens_i[nome_item],
+                        nome_item
+                    )
+                )
+
+            jogada_opcao = input("Usar item [S|N]: ").upper()
+
+            if jogada_opcao == "S":
+                index = input("Digite o index do item: ")
+
+                try:
+                    index = int(index)
+                except ValueError:
+                    print("Digite apenas o index do item")
+
+                if index in dict_itens and list(itens_m.values())[index] != 0:
+                    match index:
+                        case 0:
+                            # detector
+                            try:    
+                                detector = balas.reverse().index(1)
+                                print("A %iª bala é perigosa" % (detector + 1))
+                            except:
+                                print("Nenhuma bala perigosa na arma")
+                        case 1:
+                            # biblia
+                            try:
+                                if balas[-1] == 0:
+                                    balas[-1] = 1
+                                else:
+                                    balas[-1] = 0
+                                print("Bala no gatilho inverteu de periculosidade")
+                            except:
+                                print("As balas fugiram")
+                        case 2:
+                            # pilula
+                            if (fase["vida"] - vida_m) >= 2:
+                                vida_m += 2
+                                print("Item pilula usado, a vida aumentou em 2 pontos")
+                            elif (fase["vida"] == vida_m):
+                                vida_m += 0 
+                            else:
+                                vida_m += 1
+                                print("Item pilula usado, a vida aumentou em 1 ponto")
+                        case 3:
+                            # anzol
+                            index_item = input("Digite o index do item para roubar: ")
+
+                            try:
+                                index_item = int(index_item)
+                            except ValueError:
+                                print("Digite apenas o index do item")
+                                next
+
+                            if list(itens_i.values())[index_item] == 0:
+                                print("Nenhum item roubado, gastou o item")
+                            else:
+                                itens_m[dict_itens[index_item]] += 1
+                                itens_i[dict_itens[index_item]] -= 1
+                                print("Item %s roubado" % list(itens_m)[index_item])
+                        case 4:
+                            # alvo
+                            try:
+                                balas.pop()
+                                print("item alvo usado, agora", "tem [%i] no cartucho" % len(balas) if len(balas) else "não tem balas no cartucho")
+                            except:
+                                balas
+                                print("Não tinha nenhuma bala no cartucho, gastou o item")
+                        case 5:
+                            # algema
+                            if moeda2:
+                                moeda2 = not moeda2
+                            print("item algema usado, turno adversário pulado")
+                        case 6:
+                            # polvora
+                            dano = 2
+                            print("item polvora usado, agora o dano da bala é: ", dano)
+
+                    itens_m[dict_itens[index]] -= 1
+                else:
+                    print("Você não possui este item")
+
+            elif jogada_opcao != "N" and jogada_opcao != "S":
+                print('Digite "S" ou "N" para depois escolher o item')
+            
+        try:
+            vida_i -= balas.pop(-1) * dano
+        except:
+            print("Cartucho vazio")
+
+        vida_j = vida_m
+        vida_ia = vida_i
+        itens_j = itens_m
+        itens_ia = itens_i
+        
     else:
-        print("\nPC jogando - balas: [%s]\n\n" % str(balas)[1:-1])
+        index = 0
+
+        print("\nMAQUINA - balas: [%s]\n\n" % str(balas)[1:-1])
         vida_m = vida_ia
         vida_i = vida_j
         itens_m = itens_ia
         itens_i = itens_j
 
-    while jogada_opcao != "N" and sum(itens_m.values()) > 0:
-
-        index = 0
-
-        # Mostra vidas e itens de jogador e computador
-        if moeda:
-            print(
-                "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
-                % (vida_m, vida_i)
-            )
-        else:
-            print(
-                "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
-                % (vida_i, vida_m)
-            )
+        print(
+            "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
+            % (vida_i, vida_m)
+        )
 
         for index_item, nome_item in enumerate(itens_m.keys()):
-            if moeda:
-                print(
-                    "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
-                    % (
-                        index_item,
-                        itens_m[nome_item],
-                        nome_item,
-                        itens_i[nome_item],
-                        nome_item
-                    )
-                )
-            else:
-                print(
+            print(
                     "\t#%i\t\t[%i] - %s\t\t\t\t\t[%i] - %s"
                     % (
                         index_item,
@@ -180,100 +267,19 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
                         nome_item
                     )
                 )
+            
+        pontos = [3, 5, 2, 9, 12, 5, 23, 23]
+        tree_depth = math.log(len(pontos), 2)
+        print("The optimal value is : ", end="")
+        print(minimax(0, 0, True, pontos, tree_depth))
 
-        jogada_opcao = input("Usar item [S|N]: ").upper()
-        if jogada_opcao == "S":
-            index = input("Digite o index do item: ")
+        itens_m[dict_itens[index]] -= 1
+            
+        try:
+            vida_i -= balas.pop(-1) * dano
+        except:
+            print("Cartucho vazio")
 
-            try:
-                index = int(index)
-            except ValueError:
-                print("Digite apenas o index do item")
-
-            if index in dict_itens and list(itens_m.values())[index] != 0:
-                match index:
-                    case 0:
-                        # detector
-                        try:    
-                            detector = balas.index(1)
-                            if detector != 0:
-                                print("A %iª bala é perigosa" % detector)
-                            else:
-                                print("Não há mais nenhuma bala perigosa")
-                        except:
-                            print("Nenhuma bala perigosa na arma")
-                    case 1:
-                        # biblia
-                        try:
-                            if balas[-1] == 0:
-                                balas[-1] = 1
-                            else:
-                                balas[-1] = 0
-                            print("Bala no gatilho inverteu de periculosidade")
-                        except:
-                            print("As balas fugiram")
-                    case 2:
-                        # pilula
-                        if (fase["vida"] - vida_m) >= 2:
-                            vida_m += 2
-                            print("Item pilula usado, a vida aumentou em 2 pontos")
-                        elif (fase["vida"] == vida_m):
-                            vida_m += 0 
-                        else:
-                            vida_m += 1
-                            print("Item pilula usado, a vida aumentou em 1 ponto")
-                    case 3:
-                        # anzol
-                        index_item = input("Digite o index do item para roubar: ")
-
-                        try:
-                            index_item = int(index_item)
-                        except ValueError:
-                            print("Digite apenas o index do item")
-                            next
-
-                        if list(itens_m.values())[index_item] == 0:
-                            print("Nenhum item roubado, gastou o item")
-                        else:
-                            itens_m[dict_itens[index_item]] += 1
-                            itens_i[dict_itens[index_item]] -= 1
-                            print("Item %s roubado" % list(itens_m)[index_item])
-                    case 4:
-                        # alvo
-                        try:
-                            balas.pop()
-                            print("item alvo usado, agora", "tem [%i] no cartucho" % len(balas) if len(balas) else "não tem balas no cartucho")
-                        except:
-                            balas
-                            print("Não tinha nenhuma bala no cartucho, gastou o item")
-                    case 5:
-                        # algema
-                        if moeda2:
-                            moeda2 = not moeda2
-                        print("item moeda usado, turno adversário pulado")
-                    case 6:
-                        # polvora
-                        dano = 2
-                        print("item polvora usado, agora o dano da bala é: ", dano)
-
-                itens_m[dict_itens[index]] -= 1
-            else:
-                print("Você não possui este item")
-
-        elif jogada_opcao != "N" and jogada_opcao != "S":
-            print('Digite "S" ou "N" para depois escolher o item')
-
-    try:
-        vida_i -= balas.pop(-1) * dano
-    except:
-        print("Cartucho vazio")
-
-    if moeda:
-        vida_j = vida_m
-        vida_ia = vida_i
-        itens_j = itens_m
-        itens_ia = itens_i
-    else:
         vida_ia = vida_m
         vida_j = vida_i
         itens_ia = itens_m
