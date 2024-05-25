@@ -15,15 +15,14 @@ titulo = str(
     + "  ███    ██▄ ███    ███ ███    █▄   ███▐██▄           ███   ███    ███   ███    ███     ███    \t\t▀████▀███▄   ███    ███ ███    ███ ███       ███    █▄      ███         ███      ███    █▄ \n"
     + "  ███    ███ ███    ███ ███    ███  ███ ▀███▄   ▄█    ███   ███    ███   ███    ███     ███    \t\t  ███  ▀███▄ ███    ███ ███    ███ ███▌    ▄ ███    ███     ███         ███      ███    ███\n"
     + "▄█████████▀  ████████▀  ████████▀   ███   ▀█▀ ▄████████▀    ███    █▀     ▀██████▀     ▄████▀  \t\t  ███    ▀██  ▀██████▀  ████████▀  █████▄▄██ ██████████    ▄████▀      ▄████▀    ██████████\n\n"
-    + "\t\t\t     ▄█  ▄██████▄     ▄██████▄     ▄████████    ▄████████\t\t\t\t\t   ▄████████    ▄████████  ▄█     ▄████████\n"
-    + "\t\t\t    ▐██ ███    ███   ███    ███   ███    ███   ███    ███\t\t\t\t\t  ███    ███   ███    ███ ███    ███    ███\n"
-    + "\t\t\t    ▐██ ███    ███   ███    █▀    ███    ███   ███    ███\t\t\t\t\t  ███    █▀    ███    ███ ███▌   ███    ███\n"
-    + "\t\t\t    ▐██ ███    ███  ▄███          ███    ███  ▄███▄▄▄▄██▀\t\t\t\t\t  ███          ███    ███ ███▌  ▄███▄▄▄▄██▀\n"
-    + "\t\t\t    ▐██ ███    ███ ▀▀███ ████▄  ▀███████████ ▀▀██████▀▀  \t\t\t\t\t▀███████████ ▀███████████ ███▌ ▀▀██████▀▀  \n"
-    + "\t\t\t▄   ▐██ ███    ███   ███    ███   ███    ███ ▀████▀███▄  \t\t\t\t\t         ███   ███    ███ ███  ▀████▀███▄  \n"
-    + "\t\t\t██  ▐█▀ ███    ███   ███    ███   ███    ███   ███  ▀███▄\t\t\t\t\t   ▄█    ███   ███    ███ ███    ███  ▀███▄\n"
-    + "\t\t\t ▀███▀   ▀██████▀    ████████▀    ███    █▀    ███    ▀██\t\t\t\t\t ▄████████▀    ███    █▀  █▀     ███    ▀██"
-    + "\n\n"
+    + "           ▄█  ▄██████▄     ▄██████▄     ▄████████    ▄████████\t     ▄████████    ▄████████  ▄█     ▄████████\t   ▄████████    ▄████████    ▄██████▄     ▄████████    ▄████████    ▄████████ \n"
+    + "          ▐██ ███    ███   ███    ███   ███    ███   ███    ███\t    ███    ███   ███    ███ ███    ███    ███\t  ███    ███   ███    ███   ███    ███   ███    ███   ███    ███   ███    ███ \n"
+    + "          ▐██ ███    ███   ███    █▀    ███    ███   ███    ███\t    ███    █▀    ███    ███ ███▌   ███    ███\t  ███    ███   ███    █▀    ███    █▀    ███    ███   ███    ███   ███    █▀  \n"
+    + "          ▐██ ███    ███  ▄███          ███    ███  ▄███▄▄▄▄██▀\t    ███          ███    ███ ███▌  ▄███▄▄▄▄██▀\t ▄███▄▄▄▄██▀  ▄███▄▄▄      ▄███         ▄███▄▄▄▄██▀   ███    ███   ███        \n"
+    + "          ▐██ ███    ███ ▀▀███ ████▄  ▀███████████ ▀▀██████▀▀  \t  ▀███████████ ▀███████████ ███▌ ▀▀██████▀▀  \t▀▀██████▀▀   ▀▀███▀▀▀     ▀▀███ ████▄  ▀▀██████▀▀   ▀███████████ ▀███████████ \n"
+    + "      ▄   ▐██ ███    ███   ███    ███   ███    ███ ▀████▀███▄  \t           ███   ███    ███ ███  ▀████▀███▄  \t▀████▀███▄     ███    █▄    ███    ███ ▀████▀███▄     ███    ███          ███ \n"
+    + "      ██  ▐█▀ ███    ███   ███    ███   ███    ███   ███  ▀███▄\t     ▄█    ███   ███    ███ ███    ███  ▀███▄\t  ███  ▀███▄   ███    ███   ███    ███   ███  ▀███▄   ███    ███    ▄█    ███ \n"
+    + "       ▀███▀   ▀██████▀    ████████▀    ███    █▀    ███    ▀██\t   ▄████████▀    ███    █▀  █▀     ███    ▀██\t  ███    ▀██   ██████████   ████████▀    ███    ▀██   ███    █▀   ▄████████▀  \n\n"
 )
 dict_itens = {
     0: "Detector",
@@ -56,25 +55,25 @@ def nivel(rodada):
     match rodada:
         case 0:
             vida = random.randint(2, 3)
-            balas = random.randint(1, 3)
+            balas = random.randint(2, 3)
         case 1:
             vida = random.randint(2, 3)
-            balas = random.randint(1, 4)
+            balas = random.randint(2, 4)
         case 2:
             vida = random.randint(2, 4)
-            balas = random.randint(2, 4)
+            balas = random.randint(2, 5)
         case 3:
             vida = random.randint(3, 4)
-            balas = random.randint(2, 5)
+            balas = random.randint(3, 5)
         case 4:
             vida = random.randint(3, 5)
-            balas = random.randint(3, 5)
+            balas = random.randint(3, 6)
         case 5:
             vida = random.randint(3, 6)
-            balas = random.randint(3, 6)
+            balas = random.randint(4, 6)
         case 6:
             vida = random.randint(4, 6)
-            balas = random.randint(4, 7)
+            balas = random.randint(5, 7)
     fase = {
         "vida": vida,
         "balas": balas,
@@ -242,8 +241,6 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
         itens_j = itens_m
         itens_ia = itens_i    
     else:
-        index = 0
-
         print("\nMAQUINA - balas: [%s]\n\n" % str(balas)[1:-1])
         vida_m = vida_ia
         vida_i = vida_j
@@ -254,14 +251,6 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
             "\t\t\tJogador [Vidas: %i]\t\t\t\t\tComputador [Vidas: %i]\n"
             % (vida_i, vida_m)
         )
-
-        estatistica = []
-        eh_perigoso = balas.count(1)/len(balas)
-        try:
-            sera_perigoso = balas[0:len(balas)-1].count(1)/len(balas)
-        except:
-            sera_perigoso = 0
-        dif_vida = fase["vida"] - vida_m
 
         for index_item, nome_item in enumerate(itens_m.keys()):
             print(
@@ -274,26 +263,171 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
                         nome_item
                     )
                 )
-            estatistica.append(itens_m(nome_item) * 0.5 if nome_item in ["lupa", "alvo"] * 0.3 if nome_item in ["lupa", "alvo"])
-        estatistica = [itens, 5, 2, 9, 12, 5, 23, 23]
-        tree_depth = math.log(len(estatistica), 2)
-        index = minimax(0, 0, False, estatistica, tree_depth)
+        
+        index = 0
+        peso_itens = {
+            "Biblia": 0.3,
+            "Pilula": 0.4,
+            "Anzol": 0.7,
+            "Alvo": 0.2,
+            "Algema": 0.5,
+            "Polvora": 0.6
+            }
+        val_itens = {"ph1": 1000, "ph2": -1000}
+        dif_vida = fase["vida"] - vida_m
 
-        itens_m[dict_itens[index]] -= 1
+        if itens_m["Detector"] >= 1:
+            try:    
+                detector = balas.reverse().index(1)
+            except:
+                detector = -1
             
+            if detector == 0:
+                eh_perigoso = 1
+                sera_perigoso = (balas.count(1)-1)/(len(balas)-1)
+                peso_itens = {
+                    "Biblia": -1000,
+                    "Pilula": 0.4,
+                    "Anzol": 0.7,
+                    "Alvo": -1000,
+                    "Algema": 0.5,
+                    "Polvora": 1
+                    }
+            elif detector == 1:
+                eh_perigoso = 0
+                sera_perigoso = 1
+                peso_itens = {
+                    "Biblia": 1,
+                    "Pilula": 0.4,
+                    "Anzol": 0.7,
+                    "Alvo": 1,
+                    "Algema": 1,
+                    "Polvora": 0.6
+                    }
+            else:
+                eh_perigoso = 0
+                sera_perigoso = 0
+            
+            itens_m["Detector"] -= 1
+            
+            print("Maquina usou o detector")
+        else:
+            eh_perigoso = balas.count(1)/len(balas)
+            try:
+                sera_perigoso = balas.count(1)/(len(balas)-1)
+            except:
+                sera_perigoso = 0
+        
+        dif_vida_futura = (fase["vida"] - (vida_m - 1)) * sera_perigoso
+
+        while True:
+            for index_item, nome_item in enumerate(itens_m.keys()):
+                if nome_item != "Detector":
+                    # val_itens[nome_item] = (itens_m[nome_item] * 100 if nome_item in ["Anzol"] else (10 if ((nome_item in ["Biblia", "Alvo", "Algema"] and eh_perigoso < 0.5) or sera_perigoso >= 0.5) else (15 if (nome_item in ["Pilula"] and dif_vida != 0) else 5)) if itens_m[nome_item] > 0 else (1000))
+                    # val_itens[nome_item + str(index_item)] = 1
+                    val_itens[nome_item] = 1 * (peso_itens[nome_item] + (dif_vida/10) + eh_perigoso) * itens_m[nome_item] if itens_m[nome_item] > 0 else -1000
+                    # val_itens[nome_item + str("futuro")] = 1 * (peso_itens[nome_item] + (dif_vida_futura/10) + sera_perigoso) * itens_m[nome_item] if itens_m[nome_item] > 0 else 0.1
+            
+            # val_itens["ph3"] = 1000
+            # val_itens["ph4"] = -1000
+
+            estatistica = list(val_itens.values())
+            tree_depth = math.log(len(estatistica), 2)
+
+            # print(list(val_itens.keys()))
+            # print(estatistica)
+            # print(minimax(0, 0, False, estatistica, tree_depth))
+            # input()
+            # if minimax(0, 0, False, estatistica, tree_depth) == 1:
+            #     break
+
+            index = list(val_itens.keys())[list(val_itens.values()).index(minimax(0, 0, True, estatistica, tree_depth))]
+            # print(index)
+            # input()
+            # print(list(dict_itens.keys()))
+            # input()
+            try:
+                itens_m[index]
+            except:
+                break
+            if index not in list(dict_itens.values()) or itens_m[index] == 0:
+                print("teste3")
+                break
+            # print("Teste1")
+            # input()
+            
+            # print("Teste2")
+            # input()
+            match index:
+                case "Biblia":
+                    print("Maquina usou Biblia")
+                    # biblia
+                    try:
+                        if balas[-1] == 0:
+                            balas[-1] = 1
+                        else:
+                            balas[-1] = 0
+                        print("Bala no gatilho inverteu de periculosidade")
+                    except:
+                        print("As balas fugiram")
+                case "Pilula":
+                    # pilula
+                    print("Maquina usou Pilula")
+                    if (fase["vida"] - vida_m) >= 2:
+                        vida_m += 2
+                        print("A vida aumentou em 2 pontos")
+                    elif (fase["vida"] == vida_m):
+                        vida_m += 0 
+                    else:
+                        vida_m += 1
+                        print("A vida aumentou em 1 ponto")
+                case "Anzol":
+                    # anzol
+                    index_item = random.choice([i for i in list(itens_i.keys()) if list(itens_i.values()) > 0])
+
+                    try:
+                        index_item = int(index_item)
+                    except ValueError:
+                        print("Digite apenas o index do item")
+                        next
+
+                    if list(itens_i.values())[index_item] == 0:
+                        print("Nenhum item roubado, gastou o item")
+                    else:
+                        itens_m[dict_itens[index_item]] += 1
+                        itens_i[dict_itens[index_item]] -= 1
+                        print("Item %s roubado" % list(itens_m)[index_item])
+                case "Alvo":
+                    # alvo
+                    print("Maquina usou Alvo")
+                    try:
+                        balas.pop()
+                    except:
+                        balas
+
+                case "Algema":
+                    # algema
+                    print("Maquina usou Algema")
+                    if moeda2:
+                        moeda2 = not moeda2
+                case "Polvora":
+                    # polvora
+                    print("Maquina usou Polvora")
+                    dano = 2
+            
+            itens_m[index] -= 1
+            time.sleep(tempo_ocioso)
+        
         try:
             vida_i -= balas.pop(-1) * dano
         except:
             print("Cartucho vazio")
-
         vida_ia = vida_m
         vida_j = vida_i
         itens_ia = itens_m
         itens_j = itens_i
-
     if moeda2:
         moeda = not moeda
-
     return (moeda, vida_ia, vida_j, itens_ia.copy(), itens_j.copy(), balas)
 
 while True:
