@@ -123,7 +123,7 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
     moeda2 = True
 
     if moeda:
-        print("\nHumano - balas: [%s]\n\n" % str(balas)[1:-1])
+        print("\nHumano\n\n")
         vida_m = vida_j
         vida_i = vida_ia
         itens_m = itens_j
@@ -241,7 +241,7 @@ def jogada(moeda, vida_ia, vida_j, itens_ia, itens_j, balas):
         itens_j = itens_m
         itens_ia = itens_i    
     else:
-        print("\nMAQUINA - balas: [%s]\n\n" % str(balas)[1:-1])
+        print("\nMAQUINA\n\n")
         vida_m = vida_ia
         vida_i = vida_j
         itens_m = itens_ia
@@ -461,12 +461,16 @@ while True:
                 vida_ia = fase["vida"]
                 vida_j = fase["vida"]
                 balas = engatilhar(fase)
+                print("Há %i balas matadores e %i balas assustadoras no cartucho" % (balas.count(1) , balas.count(0)))
+                time.sleep(tempo_ocioso*3)
                 moeda = random.randint(0, 1)
                 itens_j = itens(itens_jogo.copy())
                 itens_ia = itens(itens_jogo.copy())
 
             if balas == []:
                 balas = engatilhar(fase)
+                print("Há %i balas matadores e %i balas assustadoras no cartucho" % (balas.count(1) , balas.count(0)))
+                time.sleep(tempo_ocioso*3)
 
             if 0 not in list(vez.values()):
                 vez[0] = 0
@@ -499,13 +503,21 @@ while True:
         break
     elif opcao_inicial == "S":
         os.system("cls" if os.name == "nt" else "clear")
-        print("Tutorial")
-        input("\nDigite qualquer tecla para voltar\n")
-    else:
-        print(
-            'Digite "J" e aperte ENTER para começar o jogo\n'
-            + 'Digite "S" e aperte ENTER para sair'
-        )
+        print("Saindo.")
         time.sleep(tempo_ocioso)
+    else:
+        os.system("cls" if os.name == "nt" else "clear")
+        print("Uma disputa entre você e o desconhecido.\n\n"
+              +"Uma arma será carregada com um número de balas, algumas podem te matar, outras só te assustar\n\n"
+              +"Alguns itens podem te ajudar nessa disputa, e usá-los pode ser crucial\n\n"
+              +"Detector:\trevela a posição da próxima bala matadora\n"
+              +"Biblia:\ttroca a bala no gatilho para matadora ou assustadora\n"
+              +"Pilula:\tregenera até 2 de vida\n"
+              +"Anzol:\tpermite roubar um item do adversário\n"
+              +"Alvo:\tdescarta a bala no gatilho\n"
+              +"Algema:\tprende o adversário e pula sua vez"
+              +"Polvora:\taumenta o dano das balas matadoras em 1")
+        time.sleep(tempo_ocioso)
+        input("\nDigite qualquer tecla para voltar\n")
 
     os.system("cls" if os.name == "nt" else "clear")
